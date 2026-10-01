@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KEMBARA ILMU - Permainan Pendidikan Digital</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Mali:wght@600;700&family=Outfit:wght@600;800;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .font-brand {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        .font-header {
+            font-family: 'Mali', cursive, sans-serif;
+        }
+
+        body {
+            background-color: #070a14;
+            color: #f0f9ff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.12) 0%, transparent 60%);
+        }
+
+        /* 3D Cyber Neon Text Effect */
+        .title-idea {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.8),
+                0 0 20px rgba(56, 189, 248, 0.5),
+                0 0 40px rgba(168, 85, 247, 0.6),
+                0 6px 0 #4c1d95;
+            letter-spacing: 1px;
+        }
+
+        .title-maze {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #ffffff 0%, #38bdf8 60%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 6px 0 #1e1b4b) drop-shadow(0 0 25px rgba(56, 189, 248, 0.7));
+        }
+
+        /* Magical Cyber Card */
+        .cyber-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%);
+            backdrop-filter: blur(16px);
+            border: 4px solid #38bdf8;
+            border-radius: 2rem;
+            box-shadow: 
+                0 0 30px rgba(56, 189, 248, 0.3),
+                inset 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        /* Tactile Game Buttons */
+        .game-btn-primary {
+            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+            box-shadow: 0 6px 0 #0369a1, 0 10px 20px rgba(2, 132, 199, 0.5);
+            transition: all 0.12s ease;
+        }
+
+        .game-btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0369a1;
+        }
+
+        .game-btn-amber {
+            background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+            box-shadow: 0 6px 0 #78350f, 0 10px 20px rgba(217, 119, 6, 0.5);
+            transition: all 0.12s ease;
+        }
+
+        .game-btn-amber:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #78350f;
+        }
+
+        .game-btn-purple {
+            background: linear-gradient(180deg, #c084fc 0%, #9333ea 100%);
+            box-shadow: 0 6px 0 #581c87, 0 10px 20px rgba(147, 51, 234, 0.5);
+            transition: all 0.12s ease;
+        }
+
+        .game-btn-purple:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #581c87;
+        }
+
+        #gameCanvasContainer {
+            width: 100%;
+            height: 580px;
+            border-radius: 2rem;
+            overflow: hidden;
+            border: 5px solid #38bdf8;
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.4), inset 0 0 30px rgba(15, 23, 42, 0.8);
+            position: relative;
+            background-color: #090d16;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .clickable-box {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .clickable-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.7);
+        }
+
+        .option-btn {
+            background-color: #1e1b4b;
+            border: 3px solid #38bdf8;
+            color: #f0f9ff;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.25rem;
+            border-radius: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-btn:hover {
+            background-color: #0284c7;
+            transform: translateY(-2px);
+            border-color: #f59e0b;
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+            color: #0f172a !important;
+            border-color: #fef08a !important;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+        }
+
+        .badge-capsule {
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid #38bdf8;
+            backdrop-filter: blur(8px);
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+        }
+
+        @keyframes neonGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.5)); }
+            50% { filter: drop-shadow(0 0 18px rgba(168, 85, 247, 0.9)); }
+            100% { filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.5)); }
+        }
+
+        .neon-glow-anim {
+            animation: neonGlow 3s infinite ease-in-out;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #certificateModal, #certificateModal * {
+                visibility: visible;
+            }
+            #certificateModal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                color: #0f172a;
+                box-shadow: none;
+                border: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-2 md:p-5 text-slate-50 relative">
+
+    <!-- SCREEN 1: START SCREEN / MAIN MENU -->
+    <div id="loginScreen" class="w-full max-w-xl cyber-card p-6 md:p-8 text-center space-y-6 my-auto z-10 relative">
+        <!-- Main Game Title Banner -->
+        <div class="space-y-1 relative neon-glow-anim">
+            <div class="inline-block bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 text-white font-black text-xs px-5 py-1.5 rounded-full uppercase tracking-widest font-brand shadow-lg border border-cyan-300/40 mb-2">
+                🚀 Permainan Pendidikan Digital 3D Interaktif
+            </div>
+            <h1 class="title-idea font-brand leading-none">KEMBARA ILMU</h1>
+            <p class="text-cyan-300 text-xs md:text-sm font-semibold tracking-wide mt-2">
+                <i class="fa-solid fa-gamepad mr-1 text-yellow-400"></i> Belajar Sambil Cari Jalan • Bahasa Melayu Tahun 1
+            </p>
+        </div>
+
+        <!-- Player Input Card -->
+        <div class="bg-slate-900/90 p-4 rounded-2xl border-2 border-cyan-400/60 text-left space-y-2 shadow-inner">
+            <label for="playerName" class="block font-bold text-amber-300 text-sm md:text-base">
+                <i class="fa-solid fa-user-astronaut mr-2 text-cyan-400"></i> Nama Pengembara:
+            </label>
+            <input type="text" id="playerName" placeholder="Tulis nama anda (Contoh: Uzair / Aisyah)" 
+                   class="w-full px-4 py-3 text-lg rounded-xl border-2 border-amber-400 focus:border-yellow-200 focus:outline-none font-bold text-slate-900 bg-amber-50 shadow-inner">
+        </div>
+
+        <!-- Customization Grid -->
+        <div class="grid grid-cols-2 gap-3 text-left">
+            <div>
+                <label class="block font-bold text-cyan-200 text-xs mb-1.5">
+                    <i class="fa-solid fa-shirt mr-1 text-cyan-300"></i> Warna Baju Watak:
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="selectSuitColor('blue')" id="suitBlueBtn" 
+                            class="p-2 border-2 border-blue-500 rounded-xl bg-blue-950 flex items-center justify-center gap-1 hover:scale-105 transition">
+                        <span>👕</span>
+                        <span class="font-bold text-xs text-blue-200">Biru</span>
+                    </button>
+                    <button type="button" onclick="selectSuitColor('red')" id="suitRedBtn" 
+                            class="p-2 border-2 border-slate-800 rounded-xl bg-slate-900 flex items-center justify-center gap-1 hover:scale-105 transition">
+                        <span>🛑</span>
+                        <span class="font-bold text-xs text-rose-300">Merah</span>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-bold text-cyan-200 text-xs mb-1.5">
+                    <i class="fa-solid fa-cloud-sun mr-1 text-amber-300"></i> Suasana Maze:
+                </label>
+                <select id="timeOfDaySelect" onchange="changeTimeOfDay(this.value)" class="w-full p-2.5 rounded-xl border-2 border-amber-400 bg-slate-900 text-amber-200 font-bold text-xs focus:outline-none">
+                    <option value="noon" selected>☀️ Siang Cerah</option>
+                    <option value="morning">🌅 Pagi Keemasan</option>
+                    <option value="sunset">🌆 Malam Neon 3D</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Promoted Game Features Capsules -->
+        <div class="grid grid-cols-3 gap-2 text-[11px] text-cyan-200 font-bold">
+            <div class="badge-capsule justify-center text-center">
+                <span>🎯</span>
+                <span>Gerak Watak</span>
+            </div>
+            <div class="badge-capsule justify-center text-center">
+                <span>🚩</span>
+                <span>5 Checkpoint</span>
+            </div>
+            <div class="badge-capsule justify-center text-center">
+                <span>📚</span>
+                <span>20 Soalan</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-2 pt-2">
+            <button onclick="startGame()" class="flex-1 py-4 game-btn-primary text-white text-lg md:text-xl font-black rounded-2xl tracking-wider uppercase flex items-center justify-center gap-2 font-brand">
+                <i class="fa-solid fa-compass text-yellow-300 text-2xl"></i> Mula Pengembaraan!
+            </button>
+            <button onclick="openLeaderboardModal()" class="px-5 py-4 game-btn-amber text-white text-lg font-black rounded-2xl flex items-center justify-center" title="Carta Kedudukan">
+                <i class="fa-solid fa-trophy text-yellow-200 text-2xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: GAMEPLAY MAZE SCREEN -->
+    <div id="gameScreen" class="hidden w-full max-w-5xl flex flex-col items-center relative">
+        <!-- HUD Header Bar -->
+        <div class="w-full bg-slate-900/95 backdrop-blur-md rounded-2xl p-3 md:p-4 mb-3 text-white flex flex-wrap items-center justify-between border-4 border-cyan-400/60 shadow-2xl gap-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-gradient-to-tr from-amber-500 to-yellow-300 rounded-2xl flex items-center justify-center text-3xl shadow-inner border-2 border-yellow-200">
+                    🧑‍🎓
+                </div>
+                <div>
+                    <h2 id="hudPlayerName" class="font-black text-base md:text-xl text-amber-300 leading-tight font-brand">Pengembara</h2>
+                    <p class="text-xs text-cyan-200 flex items-center gap-1">
+                        <i class="fa-solid fa-map-location-dot text-cyan-400"></i> KEMBARA ILMU
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex flex-wrap items-center gap-2 md:gap-3">
+                <!-- Suasana -->
+                <div class="bg-slate-950/90 px-3 py-1.5 rounded-xl border border-amber-400/50 flex items-center gap-1.5">
+                    <span id="todIcon" class="text-base">☀️</span>
+                    <select id="hudTodSelect" onchange="changeTimeOfDay(this.value)" class="bg-transparent text-amber-200 font-bold text-xs focus:outline-none cursor-pointer">
+                        <option value="noon" selected>Siang</option>
+                        <option value="morning">Pagi</option>
+                        <option value="sunset">Malam Neon</option>
+                    </select>
+                </div>
+
+                <!-- Timer -->
+                <div class="bg-slate-950/90 px-3 py-1.5 rounded-xl border border-cyan-400/50 flex items-center gap-2">
+                    <i class="fa-solid fa-stopwatch text-cyan-300 text-base animate-pulse"></i>
+                    <div>
+                        <span class="text-[9px] text-cyan-300 block uppercase font-bold">Masa</span>
+                        <span id="hudTimer" class="font-black text-xs md:text-sm text-cyan-200 font-mono">00:00</span>
+                    </div>
+                </div>
+
+                <!-- Syiling Emas -->
+                <div class="bg-slate-950/90 px-3 py-1.5 rounded-xl border border-yellow-400/50 flex items-center gap-2">
+                    <i class="fa-solid fa-coins text-yellow-400 text-base"></i>
+                    <div>
+                        <span class="text-[9px] text-yellow-300 block uppercase font-bold">Syiling</span>
+                        <span id="hudCoins" class="font-black text-xs md:text-sm text-yellow-300 font-mono">0</span>
+                    </div>
+                </div>
+
+                <!-- Markah -->
+                <div class="bg-slate-950/90 px-3 py-1.5 rounded-xl border border-yellow-400/50 flex items-center gap-2">
+                    <i class="fa-solid fa-star text-yellow-400 text-base animate-bounce"></i>
+                    <div>
+                        <span class="text-[9px] text-amber-300 block uppercase font-bold">Markah</span>
+                        <span id="hudScore" class="font-black text-xs md:text-sm text-yellow-300 font-mono">0 / 100</span>
+                    </div>
+                </div>
+
+                <!-- Checkpoint Stesen -->
+                <div class="bg-slate-950/90 px-3 py-1.5 rounded-xl border border-emerald-400/50 flex items-center gap-2">
+                    <i class="fa-solid fa-flag-checkered text-emerald-400 text-base"></i>
+                    <div>
+                        <span class="text-[9px] text-emerald-300 block uppercase font-bold">Checkpoint</span>
+                        <span id="hudProgress" class="font-black text-xs md:text-sm text-emerald-300 font-mono">0 / 5</span>
+                    </div>
+                </div>
+
+                <!-- Audio Toggle -->
+                <button id="bgmToggleBtn" onclick="toggleBGM()" class="bg-slate-800 hover:bg-slate-700 text-yellow-300 p-2.5 rounded-xl border border-cyan-400 flex items-center justify-center transition shadow-md" title="Muzik Latar">
+                    <i id="bgmIcon" class="fa-solid fa-music text-base"></i>
+                </button>
+
+                <!-- Leaderboard Button -->
+                <button onclick="openLeaderboardModal()" class="bg-amber-600 hover:bg-amber-500 text-white p-2.5 rounded-xl border border-amber-300 flex items-center justify-center transition shadow-md" title="Carta Kedudukan">
+                    <i class="fa-solid fa-trophy text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Floating Guide Banner (Dipindahkan ke atas canvas supaya laluan dan avatar tidak terhalang) -->
+        <div class="w-full bg-slate-950/90 px-4 py-2.5 rounded-2xl text-xs md:text-sm text-amber-200 border-2 border-cyan-400/60 flex items-center justify-center gap-2 mb-3 shadow-lg text-center">
+            <i class="fa-solid fa-wand-magic-sparkles text-yellow-400 text-base animate-spin"></i>
+            <span id="guideBannerText">Selesaikan Checkpoint 1 hingga 5 mengikut susunan untuk menjawab soalan!</span>
+        </div>
+
+        <!-- MAZE CANVAS CONTAINER -->
+        <div id="gameCanvasContainer" class="w-full relative">
+            <canvas id="forestCanvas"></canvas>
+
+            <!-- Touch D-Pad for Mobile Controls -->
+            <div class="absolute bottom-4 left-4 bg-slate-950/90 p-2.5 rounded-2xl backdrop-blur-md border-2 border-cyan-400/60 grid grid-cols-3 gap-1 z-20 md:hidden shadow-2xl">
+                <div></div>
+                <button onmousedown="startMove('up')" onmouseup="stopMove()" ontouchstart="startMove('up')" ontouchend="stopMove()" 
+                        class="w-10 h-10 bg-slate-800 text-yellow-300 font-bold rounded-xl active:bg-slate-600 flex items-center justify-center text-lg">▲</button>
+                <div></div>
+                <button onmousedown="startMove('left')" onmouseup="stopMove()" ontouchstart="startMove('left')" ontouchend="stopMove()" 
+                        class="w-10 h-10 bg-slate-800 text-yellow-300 font-bold rounded-xl active:bg-slate-600 flex items-center justify-center text-lg">◀</button>
+                <div class="w-10 h-10 bg-slate-900 text-[8px] text-cyan-300 rounded-xl flex items-center justify-center font-extrabold text-center leading-tight">TEKAN / KLIK</div>
+                <button onmousedown="startMove('right')" onmouseup="stopMove()" ontouchstart="startMove('right')" ontouchend="stopMove()" 
+                        class="w-10 h-10 bg-slate-800 text-yellow-300 font-bold rounded-xl active:bg-slate-600 flex items-center justify-center text-lg">▶</button>
+                <div></div>
+                <button onmousedown="startMove('down')" onmouseup="stopMove()" ontouchstart="startMove('down')" ontouchend="stopMove()" 
+                        class="w-10 h-10 bg-slate-800 text-yellow-300 font-bold rounded-xl active:bg-slate-600 flex items-center justify-center text-lg">▼</button>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- Bottom Game Slogan Banner -->
+        <div class="w-full mt-3 bg-gradient-to-r from-purple-900/80 via-slate-900/90 to-cyan-900/80 backdrop-blur-md p-3 rounded-2xl border-2 border-cyan-400/50 text-center flex items-center justify-center gap-3 shadow-lg">
+            <span class="text-2xl animate-bounce">🚀</span>
+            <span class="font-brand font-black text-lg md:text-xl text-yellow-300 tracking-wider">
+                "BELAJAR SAMBIL CARI JALAN"
+            </span>
+            <span class="text-2xl animate-bounce">🚀</span>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: QUESTION MODAL -->
+    <div id="questionModal" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex items-center justify-center p-3">
+        <div class="w-full max-w-3xl cyber-card p-5 md:p-8 relative max-h-[92vh] overflow-y-auto border-4 border-cyan-400">
+            <button onclick="closeQuestionModal()" class="absolute top-4 right-4 text-cyan-300 hover:text-white text-2xl font-bold bg-slate-900 rounded-full w-10 h-10 flex items-center justify-center border border-cyan-500 shadow-md">
+                &times;
+            </button>
+
+            <div class="text-center mb-4">
+                <span id="qStationBadge" class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-sm px-6 py-1.5 rounded-full uppercase tracking-wider mb-2 shadow-md font-brand">
+                    Checkpoint 1 • Soalan 1 / 4
+                </span>
+                <p class="text-amber-200 text-xs md:text-sm font-semibold">
+                    <i class="fa-solid fa-volume-high text-yellow-400 mr-1 animate-pulse"></i> Sila baca petikan di bawah, kemudian pilih jawapan yang betul!
+                </p>
+            </div>
+
+            <!-- Dynamic Question Content Area -->
+            <div id="qContentArea" class="space-y-5 my-3"></div>
+
+            <!-- Feedback Banner -->
+            <div id="feedbackBanner" class="hidden my-4 p-4 rounded-2xl text-center font-black text-lg"></div>
+
+            <!-- Action Button -->
+            <div id="modalActions" class="mt-6 flex justify-center">
+                <button id="submitAnswerBtn" onclick="checkCurrentSubAnswer()" class="w-full md:w-2/3 py-4 game-btn-primary text-white text-xl font-black rounded-2xl uppercase tracking-wider flex items-center justify-center gap-2 font-brand">
+                    <i class="fa-solid fa-circle-check text-yellow-300 text-2xl"></i> Hantar Jawapan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: LEADERBOARD MODAL -->
+    <div id="leaderboardModal" class="hidden fixed inset-0 bg-slate-950/90 z-50 flex items-center justify-center p-3">
+        <div class="w-full max-w-xl cyber-card p-6 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeLeaderboardModal()" class="absolute top-4 right-4 text-cyan-300 hover:text-white text-xl font-bold bg-slate-900 rounded-full w-8 h-8 flex items-center justify-center border border-cyan-500">
+                &times;
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="inline-block bg-gradient-to-tr from-amber-500 to-yellow-300 text-slate-950 p-3 rounded-2xl text-3xl mb-2 shadow-lg">🏆</div>
+                <h2 class="text-2xl md:text-3xl font-black text-amber-300 font-brand uppercase tracking-wide">CARTA KEDUDUKAN KEMBARA</h2>
+                <p class="text-xs md:text-sm text-cyan-200">Pengembara cemerlang dengan markah tertinggi di KEMBARA ILMU!</p>
+            </div>
+
+            <div class="space-y-3" id="leaderboardList"></div>
+
+            <div class="mt-6 text-center">
+                <button onclick="closeLeaderboardModal()" class="px-8 py-3 game-btn-amber text-white font-bold rounded-xl font-brand">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 5: CERTIFICATE MODAL -->
+    <div id="certificateModal" class="hidden fixed inset-0 bg-slate-950/95 z-50 overflow-y-auto flex items-center justify-center p-3">
+        <div class="w-full max-w-4xl bg-white rounded-3xl p-6 md:p-10 border-8 border-amber-400 shadow-2xl relative text-center text-slate-900 my-auto">
+            
+            <div class="border-4 border-dashed border-cyan-600 p-6 md:p-10 rounded-2xl relative bg-cyan-50/40">
+                <div class="flex justify-center mb-4">
+                    <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 px-8 py-2 rounded-full font-black text-lg md:text-2xl tracking-widest shadow-lg uppercase border-2 border-yellow-300 flex items-center gap-3 font-brand">
+                        <i class="fa-solid fa-award text-3xl text-cyan-900"></i>
+                        SIJIL PENCAPAIAN KEMBARA ILMU
+                        <i class="fa-solid fa-award text-3xl text-cyan-900"></i>
+                    </div>
+                </div>
+
+                <p class="text-slate-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-2">Tahniah dan Syabas Diucapkan Kepada Murid Cemerlang:</p>
+                
+                <h2 id="certName" class="text-3xl md:text-5xl font-black text-cyan-800 uppercase tracking-wide my-4 underline decoration-amber-400 decoration-4 underline-offset-8">
+                    NAMA MURID
+                </h2>
+
+                <p class="text-base md:text-lg text-slate-700 max-w-2xl mx-auto my-4 font-semibold leading-relaxed">
+                    Telah berjaya menamatkan 5 Checkpoint Laluan Kembara mengikut susunan dan menjawab 20 soalan pemahaman Bahasa Melayu Tahun 1 dengan cemerlang!
+                    <span class="font-extrabold text-cyan-900 block text-2xl mt-1 font-brand">"KEMBARA ILMU"</span>
+                </p>
+
+                <div class="my-6 inline-flex flex-wrap items-center justify-center gap-6 bg-white px-8 py-4 rounded-2xl border-2 border-amber-400 shadow-md">
+                    <div class="text-center">
+                        <span class="text-xs text-slate-500 uppercase font-bold block">Jumlah Markah</span>
+                        <span id="certScore" class="text-3xl font-black text-emerald-600 font-mono">100 / 100</span>
+                    </div>
+                    <div class="w-px h-10 bg-slate-300 hidden sm:block"></div>
+                    <div class="text-center">
+                        <span class="text-xs text-slate-500 uppercase font-bold block">Syiling Diperoleh</span>
+                        <span id="certCoins" class="text-3xl font-black text-amber-500 font-mono">12 🪙</span>
+                    </div>
+                    <div class="w-px h-10 bg-slate-300 hidden sm:block"></div>
+                    <div class="text-center">
+                        <span class="text-xs text-slate-500 uppercase font-bold block">Masa Diambil</span>
+                        <span id="certTime" class="text-2xl font-black text-cyan-600 font-mono">02:15</span>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-300 grid grid-cols-2 gap-4 text-left font-bold text-slate-600">
+                    <div>
+                        <p class="text-xs text-slate-400 uppercase">Tarikh Pencapaian:</p>
+                        <p id="certDate" class="text-slate-800 text-sm md:text-base">01 Oktober 2026</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-400 uppercase">Pengesahan Modul Digital:</p>
+                        <p class="text-slate-800 text-sm md:text-base font-serif italic mt-1">KEMBARA ILMU BM Tahun 1 🎓</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap justify-center gap-4 no-print">
+                <button onclick="window.print()" class="px-6 py-3 game-btn-primary text-white font-bold rounded-xl flex items-center gap-2 font-brand">
+                    <i class="fa-solid fa-print text-xl"></i> Cetak / Simpan PDF
+                </button>
+                <button onclick="openLeaderboardModal()" class="px-6 py-3 game-btn-purple text-white font-bold rounded-xl flex items-center gap-2 font-brand">
+                    <i class="fa-solid fa-trophy text-xl"></i> Carta Kedudukan
+                </button>
+                <button onclick="restartGame()" class="px-6 py-3 game-btn-amber text-white font-bold rounded-xl flex items-center gap-2 font-brand">
+                    <i class="fa-solid fa-rotate-right text-xl"></i> Main Semula
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Game State
+        let playerName = "";
+        let playerShirt = "blue";
+        let currentTimeOfDay = "noon";
+        let score = 0; // Total 100 markah (5 stations * 4 questions = 20 questions * 5 markah)
+        let coinsCollected = 0;
+        let elapsedSeconds = 0;
+        let timerInterval = null;
+        let completedStations = new Set();
+        let currentActiveStation = null;
+        let currentSubQuestionIndex = 0;
+        let selectedUserAnswer = null;
+
+        let leaderboardData = [
+            { name: "Uzair Ahmad", score: 100, coins: 15, time: "01:45", seconds: 105 },
+            { name: "Aisyah Humaira", score: 100, coins: 12, time: "02:10", seconds: 130 },
+            { name: "Adam Harith", score: 95, coins: 10, time: "02:25", seconds: 145 }
+        ];
+
+        let audioCtx = null;
+        let isBgmPlaying = false;
+        let bgmInterval = null;
+        let msVoices = [];
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSoundFX(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'step') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(120, now);
+                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.05);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'coin') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(987.77, now);
+                    osc.frequency.setValueAtTime(1318.51, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'correct') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const noteOsc = audioCtx.createOscillator();
+                        const noteGain = audioCtx.createGain();
+                        noteOsc.type = 'triangle';
+                        noteOsc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                        noteGain.gain.setValueAtTime(0.18, now + idx * 0.08);
+                        noteGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+                        noteOsc.connect(noteGain);
+                        noteGain.connect(audioCtx.destination);
+                        noteOsc.start(now + idx * 0.08);
+                        noteOsc.stop(now + idx * 0.08 + 0.2);
+                    });
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+            } catch (e) {
+                // Ignore audio context autoplay restriction errors prior to user interaction
+            }
+        }
+
+        function toggleBGM() {
+            isBgmPlaying = !isBgmPlaying;
+            const bgmIcon = document.getElementById('bgmIcon');
+            const bgmBtn = document.getElementById('bgmToggleBtn');
+
+            if (isBgmPlaying) {
+                if (bgmIcon) bgmIcon.className = "fa-solid fa-volume-high text-base text-emerald-400 animate-pulse";
+                if (bgmBtn) bgmBtn.title = "Matikan Muzik";
+                startSimpleBGM();
+            } else {
+                if (bgmIcon) bgmIcon.className = "fa-solid fa-music text-base text-yellow-300";
+                if (bgmBtn) bgmBtn.title = "Muzik Latar";
+                stopSimpleBGM();
+            }
+        }
+
+        function startSimpleBGM() {
+            stopSimpleBGM();
+            initAudio();
+            let noteIndex = 0;
+            const melody = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+            
+            bgmInterval = setInterval(() => {
+                if (!isBgmPlaying || !audioCtx) return;
+                try {
+                    const now = audioCtx.currentTime;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(melody[noteIndex % melody.length], now);
+                    gain.gain.setValueAtTime(0.02, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                    noteIndex++;
+                } catch(e) {}
+            }, 500);
+        }
+
+        function stopSimpleBGM() {
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+            }
+        }
+
+        function initVoices() {
+            if ('speechSynthesis' in window) {
+                msVoices = window.speechSynthesis.getVoices();
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            initVoices();
+            window.speechSynthesis.onvoiceschanged = initVoices;
+        }
+
+        function speakMalayText(text) {
+            if (!('speechSynthesis' in window)) return;
+
+            // Hentikan sebutan lama & aktifkan semula jika terhenti
+            window.speechSynthesis.cancel();
+
+            setTimeout(() => {
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'ms-MY';
+                utter.rate = 0.82;  // Kelajuan tenang & jelas untuk murid Tahun 1
+                utter.pitch = 1.35; // Laras nada feminin & lembut khas untuk suara perempuan
+
+                // Ambil senarai suara penyemak imbas
+                const currentVoices = window.speechSynthesis.getVoices();
+                const voices = currentVoices.length > 0 ? currentVoices : msVoices;
+
+                // 1. Keutamaan Suara Bahasa Melayu (ms-MY) khas perempuan (Yasmin, Zira, Google, dll.)
+                let selectedVoice = voices.find(v => 
+                    (v.lang.toLowerCase().startsWith('ms') || v.lang.toLowerCase().startsWith('id')) && 
+                    (v.name.toLowerCase().includes('yasmin') || 
+                     v.name.toLowerCase().includes('female') || 
+                     v.name.toLowerCase().includes('perempuan') || 
+                     v.name.toLowerCase().includes('gadis') || 
+                     v.name.toLowerCase().includes('zira') ||
+                     v.name.toLowerCase().includes('natural') ||
+                     v.name.toLowerCase().includes('google'))
+                );
+
+                // 2. Keutamaan Suara Bahasa Melayu Malaysia (ms-MY)
+                if (!selectedVoice) {
+                    selectedVoice = voices.find(v => v.lang.toLowerCase().startsWith('ms'));
+                }
+
+                // 3. Keutamaan Suara Bahasa Indonesia (id-ID) sebagai ganti jika tiada ms-MY
+                if (!selectedVoice) {
+                    selectedVoice = voices.find(v => v.lang.toLowerCase().startsWith('id'));
+                }
+
+                if (selectedVoice) {
+                    utter.voice = selectedVoice;
+                }
+
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                }
+
+                window.speechSynthesis.speak(utter);
+            }, 60);
+        }
+
+        function speakPassage(stationId, passageIndex) {
+            const st = stationsData[stationId];
+            if (st && st.passages && st.passages[passageIndex]) {
+                speakMalayText(st.passages[passageIndex].speakText);
+            }
+        }
+
+        function selectSuitColor(color) {
+            playerShirt = color;
+            const blueBtn = document.getElementById('suitBlueBtn');
+            const redBtn = document.getElementById('suitRedBtn');
+
+            if (color === 'blue') {
+                blueBtn.className = "p-2 border-2 border-blue-500 rounded-xl bg-blue-950 flex items-center justify-center gap-1 hover:scale-105 transition";
+                redBtn.className = "p-2 border-2 border-slate-800 rounded-xl bg-slate-900 flex items-center justify-center gap-1 hover:scale-105 transition";
+            } else {
+                redBtn.className = "p-2 border-2 border-rose-400 rounded-xl bg-rose-950 flex items-center justify-center gap-1 hover:scale-105 transition";
+                blueBtn.className = "p-2 border-2 border-slate-800 rounded-xl bg-slate-900 flex items-center justify-center gap-1 hover:scale-105 transition";
+            }
+        }
+
+        function changeTimeOfDay(val) {
+            currentTimeOfDay = val;
+            document.getElementById('timeOfDaySelect').value = val;
+            document.getElementById('hudTodSelect').value = val;
+
+            const icon = document.getElementById('todIcon');
+            if (val === 'morning') icon.innerText = '🌅';
+            else if (val === 'sunset') icon.innerText = '🌆';
+            else icon.innerText = '☀️';
+        }
+
+        function startTimer() {
+            elapsedSeconds = 0;
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                elapsedSeconds++;
+                document.getElementById('hudTimer').innerText = formatTime(elapsedSeconds);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function startMove(dir) {
+            if (dir === 'up') keys['ArrowUp'] = true;
+            if (dir === 'down') keys['ArrowDown'] = true;
+            if (dir === 'left') keys['ArrowLeft'] = true;
+            if (dir === 'right') keys['ArrowRight'] = true;
+        }
+
+        function stopMove() {
+            keys['ArrowUp'] = false;
+            keys['ArrowDown'] = false;
+            keys['ArrowLeft'] = false;
+            keys['ArrowRight'] = false;
+        }
+
+        function initMazeGame() {
+            canvas = document.getElementById('forestCanvas');
+            ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                const container = document.getElementById('gameCanvasContainer');
+                if (container && canvas) {
+                    canvas.width = container.clientWidth || 900;
+                    canvas.height = container.clientHeight || 580;
+                }
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            window.addEventListener('keydown', (e) => {
+                keys[e.key] = true;
+            });
+
+            window.addEventListener('keyup', (e) => {
+                keys[e.key] = false;
+            });
+
+            canvas.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                player.targetX = (e.clientX - rect.left) * scaleX;
+                player.targetY = (e.clientY - rect.top) * scaleY;
+            });
+
+            requestAnimationFrame(gameLoop2D);
+        }
+
+        // 5 STATIONS ARRANGED SEQUENTIALLY (1 -> 2 -> 3 -> 4 -> 5)
+        const stationsData = {
+            1: {
+                id: 1,
+                title: "Checkpoint 1: Radio 📻",
+                x: 180,
+                y: 120,
+                color: '#ec4899',
+                passages: [
+                    {
+                        title: "Petikan 1: Radio",
+                        emoji: "📻",
+                        speakText: "Ini radio saya. Radio ini baharu. Radio ini hadiah daripada ibu. Radio ini berwarna merah jambu.",
+                        text: "Ini radio saya.\nRadio ini baharu.\nRadio ini hadiah daripada ibu.\nRadio ini berwarna merah jambu."
+                    }
+                ],
+                questions: [
+                    { q: "1. Ini apa?", options: ["A) Radio 📻", "B) Televisyen 📺", "C) Telefon 📱"], correct: "A) Radio 📻" },
+                    { q: "2. Ini Radio siapa?", options: ["A) Radio saya 📻", "B) Radio Ali", "C) Radio guru"], correct: "A) Radio saya 📻" },
+                    { q: "3. Radio ini berwarna apa?", options: ["A) Merah jambu 🩷", "B) Biru 💙", "C) Kuning 💛"], correct: "A) Merah jambu 🩷" },
+                    { q: "4. Radio ini daripada siapa?", options: ["A) Hadiah daripada ibu 👩", "B) Beli di kedai", "C) Hadiah kawan"], correct: "A) Hadiah daripada ibu 👩" }
+                ]
+            },
+            2: {
+                id: 2,
+                title: "Checkpoint 2: Ceri 🍒",
+                x: 820,
+                y: 120,
+                color: '#ef4444',
+                passages: [
+                    {
+                        title: "Petikan 2: Ceri",
+                        emoji: "🍒",
+                        speakText: "Ini ceri. Nani beli ceri. Nani beri ceri kepada Salmi. Salmi suka hati.",
+                        text: "Ini ceri.\nNani beli ceri.\nNani beri ceri kepada Salmi.\nSalmi suka hati."
+                    }
+                ],
+                questions: [
+                    { q: "1. Ini apa?", options: ["A) Ceri 🍒", "B) Epal 🍎", "C) Pisang 🍌"], correct: "A) Ceri 🍒" },
+                    { q: "2. Siapa beli ceri?", options: ["A) Nani 👧", "B) Salmi 👧", "C) Ahmad 👦"], correct: "A) Nani 👧" },
+                    { q: "3. Nani beri ceri kepada siapa?", options: ["A) Salmi 👧", "B) Ali 👦", "C) Ibu 👩"], correct: "A) Salmi 👧" },
+                    { q: "4. Siapa suka hati?", options: ["A) Salmi 😃", "B) Nani 👧", "C) Atan 👦"], correct: "A) Salmi 😃" }
+                ]
+            },
+            3: {
+                id: 3,
+                title: "Checkpoint 3: Cili Merah 🌶️",
+                x: 500,
+                y: 300,
+                color: '#f97316',
+                passages: [
+                    {
+                        title: "Petikan 3: Cili Merah",
+                        emoji: "🌶",
+                        speakText: "Ini cili merah. Cili merah rasa pedas. Rozi beli cili di kedai Atan. Rozi simpan cili dalam peti ais.",
+                        text: "Ini cili merah.\nCili merah rasa pedas.\nRozi beli cili di kedai Atan.\nRozi simpan cili dalam peti ais."
+                    }
+                ],
+                questions: [
+                    { q: "1. Ini apa?", options: ["A) Cili merah 🌶️", "B) Timun 🥒", "C) Terung 🍆"], correct: "A) Cili merah 🌶️" },
+                    { q: "2. Cili merah rasa apa?", options: ["A) Rasa pedas 🥵", "B) Rasa manis 🍯", "C) Rasa masin 🧂"], correct: "A) Rasa pedas 🥵" },
+                    { q: "3. Siapa beli cili?", options: ["A) Rozi 👩", "B) Atan 👨", "C) Kamal 👦"], correct: "A) Rozi 👩" },
+                    { q: "4. Cili disimpan di mana?", options: ["A) Dalam peti ais 🧊", "B) Dalam kotak 📦", "C) Atas meja 🪑"], correct: "A) Dalam peti ais 🧊" }
+                ]
+            },
+            4: {
+                id: 4,
+                title: "Checkpoint 4: Buku Tulis 📘",
+                x: 180,
+                y: 480,
+                color: '#3b82f6',
+                passages: [
+                    {
+                        title: "Petikan 4: Buku Tulis",
+                        emoji: "📘",
+                        speakText: "Ini buku tulis. Buku tulis ini tebal. Buku tulis ini warna biru. Kamal suka tulis dalam buku ini.",
+                        text: "Ini buku tulis.\nBuku tulis ini tebal.\nBuku tulis ini warna biru.\nKamal suka tulis dalam buku ini."
+                    }
+                ],
+                questions: [
+                    { q: "1. Ini apa?", options: ["A) Buku tulis 📘", "B) Pensel ✏️", "C) Pembaris 📏"], correct: "A) Buku tulis 📘" },
+                    { q: "2. Buku tulis ini warna apa?", options: ["A) Warna biru 💙", "B) Warna merah 🔴", "C) Warna hijau 💚"], correct: "A) Warna biru 💙" },
+                    { q: "3. Siapa suka tulis dalam buku ini?", options: ["A) Kamal 👦", "B) Rozi 👩", "C) Salmi 👧"], correct: "A) Kamal 👦" },
+                    { q: "4. Apakah buku ini tebal?", options: ["A) Ya, buku tulis ini tebal 📖", "B) Tidak, buku ini nipis", "C) Buku ini kecil"], correct: "A) Ya, buku tulis ini tebal 📖" }
+                ]
+            },
+            5: {
+                id: 5,
+                title: "Checkpoint 5: Teko Kopi 🫖",
+                x: 820,
+                y: 480,
+                color: '#06b6d4',
+                passages: [
+                    {
+                        title: "Petikan 5: Teko Kopi",
+                        emoji: "🫖",
+                        speakText: "Ini teko. Ini teko Ahmad. Ini teko kopi Ahmad. Ahmad baru beli teko biru ini. Ahmad beli teko ini pada hari Rabu.",
+                        text: "Ini teko.\nIni teko Ahmad.\nIni teko kopi Ahmad.\nAhmad baru beli teko biru ini.\nAhmad beli teko ini pada hari Rabu."
+                    }
+                ],
+                questions: [
+                    { q: "1. Ini apa?", options: ["A) Teko 🫖", "B) Cawan ☕", "C) Pinggan 🍽️"], correct: "A) Teko 🫖" },
+                    { q: "2. Ini teko siapa?", options: ["A) Teko Ahmad 👦", "B) Teko Kamal", "C) Teko Pak Musa"], correct: "A) Teko Ahmad 👦" },
+                    { q: "3. Ahmad beli teko warna apa?", options: ["A) Warna biru 🩵", "B) Warna merah 🔴", "C) Warna hitam 🖤"], correct: "A) Warna biru 🩵" },
+                    { q: "4. Bilakah Ahmad beli teko ini?", options: ["A) Pada hari Rabu 🗓️", "B) Pada hari Isnin 🗓️", "C) Pada hari Jumaat 🗓️"], correct: "A) Pada hari Rabu 🗓️" }
+                ]
+            }
+        };
+
+        // Collectibles placed along sequential path (dengan syiling tambahan)
+        let coins = [
+            { x: 120, y: 120, collected: false },
+            { x: 280, y: 50, collected: false },
+            { x: 420, y: 50, collected: false },
+            { x: 600, y: 50, collected: false },
+            { x: 720, y: 50, collected: false },
+            { x: 820, y: 200, collected: false },
+            { x: 820, y: 260, collected: false },
+            { x: 680, y: 300, collected: false },
+            { x: 580, y: 300, collected: false },
+            { x: 380, y: 300, collected: false },
+            { x: 280, y: 390, collected: false },
+            { x: 420, y: 390, collected: false },
+            { x: 600, y: 390, collected: false },
+            { x: 180, y: 520, collected: false },
+            { x: 350, y: 540, collected: false },
+            { x: 500, y: 540, collected: false },
+            { x: 680, y: 540, collected: false },
+            { x: 820, y: 520, collected: false }
+        ];
+
+        let keysItems = [
+            { x: 500, y: 50, collected: false },
+            { x: 350, y: 300, collected: false }
+        ];
+
+        let mysteryBoxes = [
+            { x: 680, y: 390, collected: false },
+            { x: 650, y: 540, collected: false }
+        ];
+
+        function startGame() {
+            const inputVal = document.getElementById('playerName').value.trim();
+            if (!inputVal) {
+                alert("Sila tulis nama pengembara terlebih dahulu!");
+                return;
+            }
+
+            playerName = inputVal;
+            document.getElementById('hudPlayerName').innerText = playerName;
+
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+
+            startTimer();
+            initMazeGame();
+        }
+
+        let canvas, ctx;
+        let player = {
+            x: 60,
+            y: 120,
+            targetX: 60,
+            targetY: 120,
+            speed: 4.2,
+            direction: 'right',
+            animFrame: 0,
+            isMoving: false
+        };
+        let keys = {};
+
+        // Penghalang maze dibuang untuk kelancaran laluan
+        const mazeWalls = [];
+
+        function update2DPlayer() {
+            let moving = false;
+
+            if (keys['ArrowUp'] || keys['w'] || keys['W']) { player.y -= player.speed; player.direction = 'up'; moving = true; }
+            if (keys['ArrowDown'] || keys['s'] || keys['S']) { player.y += player.speed; player.direction = 'down'; moving = true; }
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) { player.x -= player.speed; player.direction = 'left'; moving = true; }
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) { player.x += player.speed; player.direction = 'right'; moving = true; }
+
+            if (!moving) {
+                const dx = player.targetX - player.x;
+                const dy = player.targetY - player.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist > 5) {
+                    player.x += (dx / dist) * player.speed;
+                    player.y += (dy / dist) * player.speed;
+                    moving = true;
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        player.direction = dx > 0 ? 'right' : 'left';
+                    } else {
+                        player.direction = dy > 0 ? 'down' : 'up';
+                    }
+                }
+            } else {
+                player.targetX = player.x;
+                player.targetY = player.y;
+            }
+
+            player.isMoving = moving;
+            if (moving) {
+                player.animFrame += 0.18;
+                if (Math.floor(player.animFrame) % 4 === 0) playSoundFX('step');
+            } else {
+                player.animFrame = 0;
+            }
+
+            player.x = Math.max(30, Math.min(canvas.width - 30, player.x));
+            player.y = Math.max(40, Math.min(canvas.height - 40, player.y));
+
+            // Coin pickups
+            coins.forEach(c => {
+                if (!c.collected && Math.hypot(player.x - c.x, player.y - c.y) < 22) {
+                    c.collected = true;
+                    coinsCollected++;
+                    document.getElementById('hudCoins').innerText = coinsCollected;
+                    playSoundFX('coin');
+                }
+            });
+
+            // Key pickups
+            keysItems.forEach(k => {
+                if (!k.collected && Math.hypot(player.x - k.x, player.y - k.y) < 22) {
+                    k.collected = true;
+                    coinsCollected += 2;
+                    document.getElementById('hudCoins').innerText = coinsCollected;
+                    playSoundFX('coin');
+                }
+            });
+
+            // Proximity Check to Checkpoint Stations (Strict Sequential Order: 1 -> 2 -> 3 -> 4 -> 5)
+            Object.values(stationsData).forEach(st => {
+                const dist = Math.hypot(player.x - st.x, player.y - st.y);
+                const nextRequiredId = completedStations.size + 1;
+
+                if (dist < 42 && !completedStations.has(st.id) && currentActiveStation === null) {
+                    if (st.id === nextRequiredId) {
+                        openQuestionModal(st);
+                    } else if (st.id > nextRequiredId) {
+                        // Display notification if player attempts to skip checkpoints
+                        const banner = document.getElementById('guideBannerText');
+                        if (banner) {
+                            banner.innerText = `🔒 Checkpoint ${st.id} dikunci! Sila selesaikan Checkpoint ${nextRequiredId} terlebih dahulu.`;
+                            banner.classList.add('text-rose-300');
+                            setTimeout(() => {
+                                banner.innerText = `Selesaikan Checkpoint 1 hingga 5 mengikut susunan untuk menjawab soalan!`;
+                                banner.classList.remove('text-rose-300');
+                            }, 2500);
+                        }
+                    }
+                }
+            });
+        }
+
+        function drawForestWorld() {
+            // Background according to TOD
+            const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            if (currentTimeOfDay === 'morning') {
+                bgGradient.addColorStop(0, '#0f172a');
+                bgGradient.addColorStop(0.5, '#0284c7');
+                bgGradient.addColorStop(1, '#0369a1');
+            } else if (currentTimeOfDay === 'sunset') {
+                bgGradient.addColorStop(0, '#312e81');
+                bgGradient.addColorStop(0.5, '#581c87');
+                bgGradient.addColorStop(1, '#090d16');
+            } else {
+                bgGradient.addColorStop(0, '#090d16');
+                bgGradient.addColorStop(0.5, '#0f172a');
+                bgGradient.addColorStop(1, '#020617');
+            }
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Cyber Grid Lines
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.1)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            // Draw Guided Neon Winding Sequential Path (CP1 -> CP2 -> CP3 -> CP4 -> CP5)
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 36;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.shadowColor = '#38bdf8';
+            ctx.shadowBlur = 18;
+
+            ctx.beginPath();
+            ctx.moveTo(60, 120);
+            ctx.lineTo(180, 120); // Checkpoint 1
+            ctx.lineTo(180, 50);
+            ctx.lineTo(820, 50);
+            ctx.lineTo(820, 120); // Checkpoint 2
+            ctx.lineTo(820, 300);
+            ctx.lineTo(500, 300); // Checkpoint 3
+            ctx.lineTo(500, 390);
+            ctx.lineTo(180, 390);
+            ctx.lineTo(180, 480); // Checkpoint 4
+            ctx.lineTo(180, 540);
+            ctx.lineTo(820, 540);
+            ctx.lineTo(820, 480); // Checkpoint 5
+            ctx.stroke();
+
+            // Inner Neon Trail Accent
+            ctx.strokeStyle = '#a855f7';
+            ctx.lineWidth = 18;
+            ctx.shadowColor = '#a855f7';
+            ctx.shadowBlur = 12;
+            ctx.stroke();
+
+            ctx.shadowBlur = 0; // Reset shadow blur for other shapes
+
+            // Draw 3D Maze Walls
+            mazeWalls.forEach(w => {
+                ctx.fillStyle = '#1e1b4b';
+                ctx.beginPath();
+                ctx.roundRect(w.x, w.y, w.w, w.h, 8);
+                ctx.fill();
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+            });
+
+            // Draw Collectibles (Coins & Keys)
+            coins.forEach(c => {
+                if (!c.collected) {
+                    ctx.save();
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#fef08a';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fillStyle = '#78350f';
+                    ctx.font = 'bold 10px Fredoka';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('$', c.x, c.y + 1);
+                    ctx.restore();
+                }
+            });
+
+            keysItems.forEach(k => {
+                if (!k.collected) {
+                    ctx.save();
+                    ctx.font = '16px serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🔑', k.x, k.y);
+                    ctx.restore();
+                }
+            });
+
+            mysteryBoxes.forEach(mb => {
+                ctx.save();
+                ctx.font = '18px serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🎁', mb.x, mb.y);
+                ctx.restore();
+            });
+
+            // Draw Checkpoint Flags & Sequential Lock States
+            Object.values(stationsData).forEach(st => {
+                const isDone = completedStations.has(st.id);
+                const nextRequiredId = completedStations.size + 1;
+                const isLocked = st.id > nextRequiredId;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(st.x, st.y, 26, 0, Math.PI * 2);
+                ctx.fillStyle = isDone ? '#10b981' : (isLocked ? '#334155' : st.color);
+                ctx.fill();
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = isLocked ? '#64748b' : '#ffffff';
+                ctx.stroke();
+
+                if (!isDone && !isLocked) {
+                    const pulse = Math.sin(Date.now() * 0.007) * 6;
+                    ctx.beginPath();
+                    ctx.arc(st.x, st.y, 30 + pulse, 0, Math.PI * 2);
+                    ctx.strokeStyle = st.color;
+                    ctx.lineWidth = 2.5;
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 16px Fredoka';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                if (isDone) {
+                    ctx.fillText('✓', st.x, st.y + 1);
+                } else if (isLocked) {
+                    ctx.fillText('🔒', st.x, st.y + 1);
+                } else {
+                    ctx.fillText(st.id, st.x, st.y + 1);
+                }
+
+                ctx.fillStyle = isLocked ? '#94a3b8' : '#fef08a';
+                ctx.font = 'bold 12px Fredoka';
+                ctx.fillText(st.title, st.x, st.y - 34);
+
+                ctx.restore();
+            });
+
+            // Draw Player Character
+            draw2DExplorerCharacter(player.x, player.y);
+        }
+
+        function draw2DExplorerCharacter(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            const bounce = player.isMoving ? Math.sin(player.animFrame * 2) * 3 : 0;
+            const shirtColor = playerShirt === 'red' ? '#ef4444' : '#2563eb';
+
+            // Glow aura beneath player
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+            ctx.beginPath();
+            ctx.ellipse(0, 16, 16, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Legs
+            const legOffset = player.isMoving ? Math.sin(player.animFrame * 2) * 4 : 0;
+            ctx.fillStyle = '#334155';
+            ctx.beginPath();
+            ctx.roundRect(-7, 5 + legOffset + bounce, 5, 10, 2);
+            ctx.roundRect(2, 5 - legOffset + bounce, 5, 10, 2);
+            ctx.fill();
+
+            // Backpack
+            ctx.fillStyle = '#b45309';
+            ctx.beginPath();
+            ctx.roundRect(-13, -10 + bounce, 5, 14, 2);
+            ctx.fill();
+
+            // Torso
+            ctx.fillStyle = shirtColor;
+            ctx.beginPath();
+            ctx.roundRect(-10, -12 + bounce, 20, 18, 5);
+            ctx.fill();
+
+            // Head
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath();
+            ctx.arc(0, -22 + bounce, 11, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eyes
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(-3.5, -23 + bounce, 1.8, 0, Math.PI * 2);
+            ctx.arc(3.5, -23 + bounce, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cap
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.ellipse(0, -28 + bounce, 15, 4.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(0, -31 + bounce, 9, Math.PI, 0);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function gameLoop2D() {
+            update2DPlayer();
+            drawForestWorld();
+            requestAnimationFrame(gameLoop2D);
+        }
+
+        function openQuestionModal(st) {
+            currentActiveStation = st;
+            currentSubQuestionIndex = 0;
+            selectedUserAnswer = null;
+
+            document.getElementById('qStationBadge').innerText = `${st.title} • Soalan ${currentSubQuestionIndex + 1} / 4`;
+
+            renderSubQuestion();
+            document.getElementById('questionModal').classList.remove('hidden');
+        }
+
+        function renderSubQuestion() {
+            if (!currentActiveStation) return;
+
+            selectedUserAnswer = null;
+            const st = currentActiveStation;
+            const qObj = st.questions[currentSubQuestionIndex];
+
+            document.getElementById('qStationBadge').innerText = `${st.title} • Soalan ${currentSubQuestionIndex + 1} / 4`;
+
+            const contentArea = document.getElementById('qContentArea');
+            const feedback = document.getElementById('feedbackBanner');
+            feedback.classList.add('hidden');
+            contentArea.innerHTML = "";
+
+            const topicCard = document.createElement('div');
+            topicCard.className = "bg-slate-900/90 p-4 md:p-6 rounded-2xl border-2 border-cyan-400/50 space-y-6 shadow-lg";
+
+            // Reading Passage Section
+            let passageSectionHTML = `<div class="space-y-3">`;
+            st.passages.forEach((p, pIdx) => {
+                passageSectionHTML += `
+                    <div class="bg-slate-950/90 p-4 rounded-xl border-2 border-amber-400/70 shadow-md">
+                        <div class="flex items-center gap-3 clickable-box mb-3 p-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-400/40 transition cursor-pointer" onclick="speakPassage(${st.id}, ${pIdx})">
+                            <div class="text-4xl bg-amber-400/20 p-2.5 rounded-2xl border-2 border-amber-300 flex-shrink-0 animate-bounce cursor-pointer hover:scale-110 transition shadow-lg" title="Tekan gambar ini untuk mendengar bacaan suara perempuan Bahasa Melayu">
+                                ${p.emoji}
+                            </div>
+                            <div class="flex-1 cursor-pointer">
+                                <h4 class="text-lg font-black text-amber-300 font-brand flex items-center gap-2">
+                                    ${p.title}
+                                    <span class="text-[10px] bg-cyan-400 text-slate-950 px-2 py-0.5 rounded-full font-black uppercase tracking-wider"><i class="fa-solid fa-volume-high"></i> Suara Perempuan (ms-MY)</span>
+                                </h4>
+                                <span class="text-xs text-yellow-200 font-bold block mt-0.5"><i class="fa-solid fa-hand-pointer mr-1 animate-pulse text-amber-300"></i> Tekan gambar ${p.emoji} atau tajuk ini untuk mendengar bacaan</span>
+                            </div>
+                        </div>
+                        <p class="text-sm md:text-base font-semibold text-cyan-100 whitespace-pre-line leading-relaxed bg-slate-900/80 p-3 rounded-xl border border-slate-700/60">${p.text}</p>
+                    </div>
+                `;
+            });
+            passageSectionHTML += `</div>`;
+
+            // Question & Response Options
+            let questionSectionHTML = `
+                <div class="bg-slate-950/95 p-5 rounded-2xl border-2 border-amber-400 space-y-4 shadow-inner">
+                    <div class="flex justify-between items-center text-xs font-bold text-amber-300">
+                        <span>SOALAN ${currentSubQuestionIndex + 1} DARIPADA 4</span>
+                        <span class="bg-amber-500 text-slate-950 px-3 py-1 rounded-full font-black">5 Markah</span>
+                    </div>
+                    <p class="font-bold text-amber-100 text-base md:text-lg border-l-4 border-amber-400 pl-3 py-1">${qObj.q}</p>
+                    <div id="optionsStack" class="flex flex-col gap-2.5 pt-2"></div>
+                </div>
+            `;
+
+            topicCard.innerHTML = passageSectionHTML + questionSectionHTML;
+            contentArea.appendChild(topicCard);
+
+            const optsStack = topicCard.querySelector('#optionsStack');
+
+            qObj.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.className = "option-btn font-bold text-sm md:text-base shadow-md active:scale-98";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-circle-check opacity-0 text-amber-300"></i>`;
+
+                btn.onclick = () => {
+                    Array.from(optsStack.children).forEach(c => {
+                        c.classList.remove('selected');
+                        const icon = c.querySelector('.fa-circle-check');
+                        if (icon) icon.classList.add('opacity-0');
+                    });
+                    btn.classList.add('selected');
+                    const icon = btn.querySelector('.fa-circle-check');
+                    if (icon) icon.classList.remove('opacity-0');
+                    selectedUserAnswer = opt;
+                };
+
+                optsStack.appendChild(btn);
+            });
+        }
+
+        function closeQuestionModal() {
+            document.getElementById('questionModal').classList.add('hidden');
+            currentActiveStation = null;
+        }
+
+        function checkCurrentSubAnswer() {
+            if (!currentActiveStation) return;
+
+            const st = currentActiveStation;
+            const qObj = st.questions[currentSubQuestionIndex];
+            const feedback = document.getElementById('feedbackBanner');
+            feedback.classList.remove('hidden');
+
+            if (!selectedUserAnswer) {
+                feedback.className = "my-4 p-3 rounded-2xl text-center font-bold text-base bg-amber-950 text-amber-200 border border-amber-400 font-brand";
+                feedback.innerHTML = "⚠ Sila pilih satu jawapan terlebih dahulu.";
+                return;
+            }
+
+            if (selectedUserAnswer === qObj.correct) {
+                playSoundFX('correct');
+                feedback.className = "my-4 p-4 rounded-2xl text-center font-black text-xl bg-slate-950 text-emerald-300 border-2 border-emerald-400 shadow-lg font-brand";
+                feedback.innerHTML = `🎉 Syabas! Jawapan BETUL! (+5 Markah)`;
+
+                score += 5;
+                if (score > 100) score = 100;
+                document.getElementById('hudScore').innerText = `${score} / 100`;
+
+                setTimeout(() => {
+                    currentSubQuestionIndex++;
+                    if (currentSubQuestionIndex < st.questions.length) {
+                        renderSubQuestion();
+                    } else {
+                        // All 4 questions in station answered
+                        completedStations.add(st.id);
+                        document.getElementById('hudProgress').innerText = `${completedStations.size} / 5`;
+                        closeQuestionModal();
+
+                        if (completedStations.size === 5) {
+                            finishAllStations();
+                        }
+                    }
+                }, 1100);
+            } else {
+                playSoundFX('wrong');
+                feedback.className = "my-4 p-4 rounded-2xl text-center font-black text-xl bg-rose-950 text-rose-300 border-2 border-rose-500 shadow-lg font-brand";
+                feedback.innerHTML = `❌ Maaf, jawapan kurang tepat. Sila baca petikan di atas dan cuba lagi!`;
+            }
+        }
+
+        function finishAllStations() {
+            stopTimer();
+
+            const finalTime = formatTime(elapsedSeconds);
+            
+            leaderboardData.push({
+                name: playerName,
+                score: score,
+                coins: coinsCollected,
+                time: finalTime,
+                seconds: elapsedSeconds
+            });
+
+            leaderboardData.sort((a, b) => b.score - a.score || b.coins - a.coins || a.seconds - b.seconds);
+
+            showCertificate();
+        }
+
+        function showCertificate() {
+            document.getElementById('certName').innerText = playerName;
+            document.getElementById('certScore').innerText = `${score} / 100`;
+            document.getElementById('certCoins').innerText = `${coinsCollected} 🪙`;
+            document.getElementById('certTime').innerText = formatTime(elapsedSeconds);
+
+            const today = new Date().toLocaleDateString('ms-MY', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('certDate').innerText = today;
+
+            document.getElementById('certificateModal').classList.remove('hidden');
+        }
+
+        function openLeaderboardModal() {
+            const listContainer = document.getElementById('leaderboardList');
+            listContainer.innerHTML = "";
+
+            leaderboardData.forEach((item, index) => {
+                const rankBadge = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
+                const isCurrentPlayer = item.name === playerName;
+
+                const row = document.createElement('div');
+                row.className = `p-3.5 rounded-2xl border flex items-center justify-between font-bold text-sm md:text-base ${isCurrentPlayer ? 'bg-amber-500/20 border-amber-400 text-amber-200' : 'bg-slate-900/80 border-slate-700 text-cyan-100'}`;
+                
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl font-black w-8 text-center">${rankBadge}</span>
+                        <div>
+                            <span class="block text-lg font-black font-brand">${item.name} ${isCurrentPlayer ? '(Anda)' : ''}</span>
+                            <span class="text-xs text-cyan-300 font-normal"><i class="fa-solid fa-clock mr-1"></i> Masa: ${item.time} • 🪙 Syiling: ${item.coins}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xl font-black text-yellow-300 block font-mono">${item.score} Markah</span>
+                    </div>
+                `;
+
+                listContainer.appendChild(row);
+            });
+
+            document.getElementById('leaderboardModal').classList.remove('hidden');
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.add('hidden');
+        }
+
+        function restartGame() {
+            score = 0;
+            coinsCollected = 0;
+            completedStations.clear();
+            currentActiveStation = null;
+            currentSubQuestionIndex = 0;
+            player.x = 60;
+            player.y = 120;
+            player.targetX = 60;
+            player.targetY = 120;
+
+            coins.forEach(c => c.collected = false);
+            keysItems.forEach(k => k.collected = false);
+
+            document.getElementById('hudScore').innerText = "0 / 100";
+            document.getElementById('hudCoins').innerText = "0";
+            document.getElementById('hudProgress').innerText = "0 / 5";
+
+            document.getElementById('certificateModal').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
